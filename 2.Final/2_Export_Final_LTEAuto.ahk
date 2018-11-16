@@ -1,0 +1,342 @@
+; Declare Global
+global OutputPath = "C:\AutoExport\Final\LTEAuto\"
+global SpeedS = 200
+global SpeedM = 1000
+global SpeedL = 10000
+
+Goto, StartProcess
+
+;---Define Function ---
+ScreenSetup(){
+MouseClickDrag, left, 11,  319, 200, 336 ,20	
+Sleep, 1000
+MouseClickDrag, left, 1439,  326, 412, 326 ,20	
+Sleep, 1000
+}
+
+ClearAllAtribute(){
+MouseClick, left, 225, 855 , 3
+Sleep, 1000	
+MouseClick, left,  382,  68  ; click Attribute button
+Sleep, 2000
+MouseClick, left, 548, 239
+Sleep, 2000
+Send, {Home}
+Sleep, 2000
+Send, {LShift Down}
+Sleep, 2000
+Send, {End}
+Sleep, 2000
+Send, {LShift Up}
+Sleep, 2000
+
+Click, 371, 220 Left, Down
+Sleep, 1000
+Click, 371, 220 Left, Up
+Sleep, 1000
+
+Click, 597, 380 Left, Down
+Sleep, 1000
+Click, 597, 380 Left, Up
+Sleep, 1000
+}
+
+AddAttribute(){
+MouseClick, left, 311, 854
+Sleep, 1000
+Send, {Home} ; set to home prepare for select
+Sleep, 2000
+MouseClick, left,  382,  68  ; click Attribute button
+Sleep, 2000
+
+MouseClick, left, 148 , 233
+Sleep, 3000
+
+; Select attribute for LTE Auto
+; R2 Expand
+Send, {Right}{Down}{Down}{Right}{Down}{Down}{Right}{Down}{Down}{Down}{Down}{Down}{Right}{Down}{Down}{Down}{Right}  ;  expand all
+Sleep, 1000
+
+; DL Measurement
+MouseClick, left, 153, 271, 2
+Sleep, 1000
+
+;LTE Advance
+MouseClick, left, 153, 308, 2
+Sleep, 1000
+
+;Application Measurement
+MouseClick, left, 153, 217, 2
+Sleep, 1000
+
+MouseClick, left, 153, 254, 2
+Sleep, 1000
+
+MouseClick, left, 153, 198, 2
+Sleep, 1000
+
+send, {Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Right}{Down}
+MouseClick, left, 153, 326, 2
+Sleep, 1000
+
+send, {Up}{Up}{Up}{Up}{Up}{Up}{Up}{Up}{Up}{Up}{Right}{Down}
+MouseClick, left, 153, 162, 2
+Sleep, 1000
+
+send, {Up}{Up}{Up}{Up}{Up}{Up}{Up}{Up}
+sleep, 1000
+
+send, {Right}
+sleep, 1000
+send,{Down}
+sleep, 1000
+send,{Right}{Down}
+sleep, 1000
+
+send, {Tab}
+sleep, 1000
+send,{Space}
+Sleep, 1000
+
+Send, {LShift Down}
+Sleep, 1000
+send,{Tab}
+Sleep, 1000
+Send, {LShift Up}
+Sleep, 1000
+
+; R1 Tp UL
+send, {Up}{Up}{Up}{Up}{Up}{Up}{Up}{Left}
+sleep,1000
+send, {Up}{Right}
+sleep,1000
+send, {Down}{Down}{Right}
+sleep,1000
+send, {Down}{Down}{Down}
+sleep,1000
+send, {Right}{Down}{Right}{Down}{Down}
+sleep,1000
+
+send, {Tab}
+sleep,200	
+send, {Space}
+sleep,200
+
+send, {Tab}{Tab}{Enter}   ; enter and exit from Edit attribuite windows
+Sleep, 30000
+}
+
+UnSelectAndCollapAll(){
+; unselect & Collap all
+MouseClick, left, 225, 855 , 3
+Sleep, 1000
+MouseClick, left, 324, 800
+Sleep, 3000
+send, {Home}
+Sleep, 3000
+MouseClick, right, 297,125
+Sleep, 5000
+Send, {Down}{Down}{Down}{Down}{Down}{Enter}
+Sleep, 5000
+MouseClick, right, 297,125
+Sleep, 5000
+Send, {Down}{Down}{Down}{Down}{Down}{Down}{Down}{Enter}
+Sleep, 5000
+}
+
+SelectCellRef(x,y){
+MouseClick, left , x ,y
+Sleep, 3000
+}
+
+ExportMap(ExportName){
+;- click to on layer --	
+
+; - click on map -	
+MouseClick, right,  924,  446
+Sleep, 5000
+Send, {Down}{Down}{Down}{Down}{Down}{Down}{Right}{Down}
+Send, {Enter}
+
+WinWait, Export Map as Image, 
+IfWinNotActive, Export Map as Image, , WinActivate, Export Map as Image, 
+WinWaitActive, Export Map as Image, 
+Sleep, 1000
+
+Send, %ExportName% ; file name
+Sleep, 1000
+Send, {Enter}
+Sleep, 1000
+
+IfWinExist, Confirm Save As
+	{
+		Send, !y
+		Sleep, 1000
+	}
+	
+Sleep, 1000	
+;- click to uncheck layer
+
+}
+
+ExportLegend(ExportLegendName,x,y){
+;MouseClick, left , 228, 236
+MouseClick, left , %x%,  %y%
+Sleep, 5000
+
+lx := x+90
+ly := y+15
+MouseClick, right ,  %lx%, %ly%
+sleep,1000
+send, {Down}{Down}{Down}{Down}{Right}{Down}
+send, {Enter}
+sleep, 1000
+
+WinWait, Export Legend as Image, 
+IfWinNotActive, Export Legend as Image, , WinActivate, Export Legend as Image, 
+WinWaitActive, Export Legend as Image, 
+Sleep, 1000
+
+Send, %ExportLegendName% ; file name
+Sleep, 1000
+Send, {Enter}
+Sleep, 1000
+
+IfWinExist, Confirm Save As
+	{
+		Send, !y
+		Sleep, 1000
+	}
+Sleep, 1000
+
+MouseClick, left , %x%,  %y%  ; close legend
+Sleep, 5000
+}
+
+ActiveMap(){
+WinWait, Actix Software - [Map1], 
+IfWinNotActive, Actix Software - [Map1], , WinActivate, Actix Software - [Map1], 
+WinWaitActive, Actix Software - [Map1], 
+MouseClick, left,  916,  470
+Sleep, 2000
+}
+
+ClickLayer(x,y){
+	MouseClick, left, %x% , %y%
+	Sleep,1000
+}
+
+;----- end defined function ---
+StartProcess:
+; Check Actix is active
+WinWait, Actix Software - [Map1], 
+IfWinNotActive, Actix Software - [Map1], , WinActivate, Actix Software - [Map1], 
+WinWaitActive, Actix Software - [Map1], 
+
+ClearAllAtribute()
+AddAttribute()
+UnSelectAndCollapAll()
+SelectCellRef(243,140) ; 1800
+sleep, 10000
+SelectCellRef(243,155) ; 2100
+sleep, 10000
+
+
+; --- prepare export file name -----
+ExportName1 =   %OutputPath%1_RSRP.jpg
+ExportName2 =  %OutputPath%2_SINR.jpg
+ExportName3 = %OutputPath%3_PCI.jpg
+ExportName4 = %OutputPath%4_RI.jpg
+ExportName5 = %OutputPath%5_MCS_Average_DL.jpg
+ExportName6 = %OutputPath%6_EARFCN_DL.jpg
+ExportName7 = %OutputPath%7_CA_Active.jpg
+ExportName8 = %OutputPath%8_Throughput_DL.jpg
+ExportName9 = %OutputPath%9_Throughput_UL.jpg
+
+ExportLegendName1 = %OutputPath%1_Legend_RSRP.wmf
+ExportLegendName2 = %OutputPath%2_Legend_SINR.wmf
+ExportLegendName3 = %OutputPath%3_Legend_PCI.wmf
+ExportLegendName4 = %OutputPath%4_Legend_RI.wmf
+ExportLegendName5 = %OutputPath%5_Legend_MCS_Average_DL.wmf
+ExportLegendName6 = %OutputPath%6_Legend_EARFCN_DL.wmf
+ExportLegendName7 = %OutputPath%7_Legend_CA_Active.wmf
+ExportLegendName8 = %OutputPath%8_Legend_Throughput_DL.wmf
+ExportLegendName9 = %OutputPath%9_Legend_Throughput_UL.wmf
+
+x = 244
+y:= 235
+ClickLayer(x,y)
+Sleep, 5000
+ActiveMap()
+ExportMap(ExportName1)
+ExportLegend(ExportLegendName1,228,236) 
+ClickLayer(x,y)
+
+y:= y + 15
+ClickLayer(x,y)
+Sleep, 5000
+ActiveMap()
+ExportMap(ExportName2) 
+ExportLegend(ExportLegendName2,228,253)
+ClickLayer(x,y)
+
+y:= y + 15
+ClickLayer(x,y)
+Sleep, 5000
+ActiveMap()
+ExportMap(ExportName3)
+ExportLegend(ExportLegendName3,228,268)
+MouseClick, left, 246, 92
+Sleep, 1000
+ClickLayer(x,y)
+
+y:= y + 15
+ClickLayer(x,y)
+Sleep, 5000
+ActiveMap()
+ExportMap(ExportName4)
+ExportLegend(ExportLegendName4,228,285)
+ClickLayer(x,y)
+
+y:= y + 15
+ClickLayer(x,y)
+Sleep, 5000
+ActiveMap()
+ExportMap(ExportName5)
+ExportLegend(ExportLegendName5,228,300)
+ClickLayer(x,y)
+
+y:= y + 15
+ClickLayer(x,y)
+Sleep, 5000
+ActiveMap()
+ExportMap(ExportName6) 
+ExportLegend(ExportLegendName6,228,315)
+ClickLayer(x,y)
+
+y:= y + 15
+ClickLayer(x,y)
+Sleep, 5000
+ActiveMap()
+ExportMap(ExportName7) 
+ExportLegend(ExportLegendName7,228,330)
+ClickLayer(x,y)
+
+y:= y + 15
+ClickLayer(x,y)
+Sleep, 5000
+ActiveMap()
+ExportMap(ExportName8) 
+ExportLegend(ExportLegendName8,228,348)
+ClickLayer(x,y)
+
+ClickLayer(243,364)
+Sleep, 5000
+ActiveMap()
+ExportMap(ExportName9)
+ExportLegend(ExportLegendName9,228,364)
+ClickLayer(243,364)
+
+MsgBox "Finish Post LTEAuto"
+
+return

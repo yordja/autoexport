@@ -1,5 +1,8 @@
 ; Declare Global
-global OutputPath = "C:\AutoExport\PreTest\GSM\"
+global OutputPath = "C:\AutoExport\PostTest\GSM\"
+global SpeedS = 200
+global SpeedM = 1000
+global SpeedL = 10000
 
 Goto, StartProcess
 
@@ -13,16 +16,15 @@ Sleep, 1000
 
 ClearAllAtribute(){
 MouseClick, left,  382,  68  ; click Attribute button
-Sleep, 1000
-
+Sleep, 3000
 MouseClick, left, 548,239
-Sleep, 100
+Sleep, 2000
 Send, {Home}
-Sleep, 100
+Sleep, 1000
 Send, {LShift Down}
-Sleep, 100
+Sleep, 1000
 Send, {End}
-Sleep, 100
+Sleep, 1000
 Send, {LShift Up}
 Sleep, 1000
 
@@ -39,49 +41,76 @@ Sleep, 1000
 
 AddAttribute(){
 MouseClick, left, 311, 854
-Sleep,100
+Sleep,1000
 Send, {Home}
+Sleep,1000
 
 MouseClick, left,  382,  68  ; click Attribute menu
-Sleep, 1000
+Sleep, 2000
 
 ; Select attribute for GSM
 MouseClick, left,  168,  221 ; attribute windows
 Sleep, 1000
 
-Send, {Right}{Down}{Right}{Down}{Down}{Down}{Down}{Down}{Down}{Right}{Down}{Down}{Down}{Down}{Down}{Down}{Right}{Down}{Right}{Down}{Down}{Right}
-Sleep, 1000
+Send, {Right}{Down}{Right}{Down}{Down}{Down}{Down}{Down}{Right}{Down}{Down}{Down}{Down}{Down}{Down}{Right}{Down}{Right}{Down}{Down}{Right}
+Sleep, 2000
 
-; Drag attribute to right
-MouseClick , left , 192, 325
-sleep, 500
-
-Send, {Control down}
-MouseClick, left, 196, 344
-Send, {Control up}
-sleep, 500
-
-Send, {Control down}
-MouseClick, left, 196, 290
-Send, {Control up}
-sleep, 1000
-
-MouseClick, left,  365,  180
-Sleep, 1000
-
+; Add attribute to right
+;1 RxLEv
+Send, {Down}
+Sleep, %SpeedM%
 Send, {Tab}
-Sleep, 100
+Sleep, %SpeedM%
+Send, {Space}
+Sleep, %SpeedS%
+
+;---- back ----
+Send, {LShift Down}
+Sleep, %SpeedM%
 Send, {Tab}
-Sleep, 100
+Sleep, %SpeedM%
+Send, {LShift Up}
+Sleep, %SpeedM%
+;--- end back ----
+
+;2 RxQual
+Send, {Down}
+Sleep, %SpeedM%
+Send, {Tab}
+Sleep, %SpeedM%
+Send, {Space}
+Sleep, %SpeedM%
+
+;---- back ----
+Send, {LShift Down}
+Sleep, %SpeedM%
+Send, {Tab}
+Sleep, %SpeedM%
+Send, {LShift Up}
+Sleep, %SpeedM%
+;--- end back ----
+
+;3 BCCH
+Send, {Up}{Up}{Up}
+Sleep, %SpeedM%
+Send, {Tab}
+Sleep, %SpeedM%
+Send, {Space}
+Sleep, %SpeedM%
+
+;send enter
+Send, {Tab}
+Sleep, 1000
+Send, {Tab}
+Sleep, 1000
 Send, {Enter}
-Sleep, 5000
+Sleep, 15000
 }
 
 UnSelectAndCollapAll(){
 ; unselect & Collap all
-
 MouseClick, left, 225, 855 , 3
-Sleep, 100
+Sleep, 1000
 MouseClick, left, 324, 800
 Sleep, 1000
 send, {Home}
@@ -89,7 +118,7 @@ MouseClick, right, 299,126
 Sleep, 2000
 Send, {Down}{Down}{Down}{Down}{Down}{Enter}
 Sleep, 200
-MouseClick, right, 297,158
+MouseClick, right, 299,126
 Sleep, 2000
 Send, {Down}{Down}{Down}{Down}{Down}{Down}{Down}{Enter}
 Sleep, 200
@@ -101,8 +130,6 @@ Sleep, 200
 }
 
 ExportMap(ExportName){
-;- click to on layer --	
-
 ; - click on map -	
 MouseClick, right,  924,  446
 Sleep, 1000
@@ -129,7 +156,6 @@ Sleep, 1000
 
 ExportLegend(ExportLegendName,x,y){
 ; --export legend --
-;MouseClick, left , 228, 236
 MouseClick, left , %x%,  %y%
 Sleep, 1000
 
@@ -189,7 +215,6 @@ UnSelectAndCollapAll()
 SelectCellRef(243,170) ; GSM
 sleep, 5000
 
-
 ; --- prepare export file name -----
 ExportName1 = %OutputPath%1_RxLev.jpg
 ExportName2 = %OutputPath%2_RxQual.jpg
@@ -230,5 +255,5 @@ ExportMap(ExportName3)
 ExportLegend(ExportLegendName3,228,268)  ; location collape legend
 ClickLayer(x,y)
 
-MsgBox "Finish"
+MsgBox "Finish Post GSM900"
 return

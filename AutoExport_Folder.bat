@@ -1,0 +1,10 @@
+mkdir C:\AutoExport\PreTest\GSM
+mkdir C:\AutoExport\PreTest\LTE900
+mkdir C:\AutoExport\PreTest\LTEAuto
+mkdir C:\AutoExport\PreTest\U900
+mkdir C:\AutoExport\PreTest\U2100
+mkdir C:\AutoExport\PostTest\GSM
+mkdir C:\AutoExport\PostTest\LTE900
+mkdir C:\AutoExport\PostTest\LTEAuto
+mkdir C:\AutoExport\PostTest\U900
+mkdir C:\AutoExport\PostTest\U2100
